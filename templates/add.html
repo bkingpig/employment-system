@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>录入就业信息</h2>
+<form method="post">
+    学号：<input type="text" name="student_id" required><br>
+    姓名：<input type="text" name="name" required><br>
+    专业：<input type="text" name="major"><br>
+    性别：<input type="text" name="gender"><br>
+    电话：<input type="text" name="phone"><br>
+    就业单位：<input type="text" name="employer" required><br>
+    状态：<input type="text" name="status"><br>
+    <button type="submit">提交</button>
+    <a href="{{ url_for('dashboard') }}">返回</a>
+</form>
+{% endblock %}
