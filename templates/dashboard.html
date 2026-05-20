@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>就业信息列表</h2>
+
+<div class="filter-bar">
+    <input type="text" id="search_student_id" placeholder="按学号查询">
+    <input type="text" id="search_major" placeholder="按专业查询">
+    <input type="text" id="search_employer" placeholder="按就业单位查询">
+    <button onclick="searchRecords()">🔍 查询</button>
+    <a href="{{ url_for('add_record') }}" class="btn">➕ 录入信息</a>
+    <a href="{{ url_for('export_excel') }}" class="btn">📎 导出Excel</a>
+    <a href="{{ url_for('export_pdf') }}" class="btn">📄 导出PDF</a>
+    <form action="{{ url_for('import_excel') }}" method="post" enctype="multipart/form-data" style="display:inline">
+        <input type="file" name="file" accept=".xlsx, .xls" required>
+        <button type="submit">📂 批量导入</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+        <tr><th>学号</th><th>姓名</th><th>专业</th><th>性别</th><th>电话</th><th>就业单位</th><th>状态</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+        {% for r in records %}
+        <tr>
+            <td>{{ r.student_id }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.major }}</td>
+            <td>{{ r.gender }}</td>
+            <td>{{ r.phone }}</td>
+            <td>{{ r.employer }}</td>
+            <td>{{ r.status }}</td>
+            <td>
+                <a href="{{ url_for('edit_record', id=r.id) }}">✏️ 编辑</a> |
+                <a href="{{ url_for('delete_record', id=r.id) }}" onclick="return confirm('确定删除？')">🗑️ 删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+function searchRecords() {
+    let student_id = document.getElementById('search_student_id').value;
+    let major = document.getElementById('search_major').value;
+    let employer = document.getElementById('search_employer').value;
+    window.location.href = `/search?student_id=${student_id}&major=${major}&employer=${employer}`;
+}
+</script>
+{% endblock %}
